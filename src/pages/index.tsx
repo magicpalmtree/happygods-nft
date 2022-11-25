@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Bars3Icon, ArrowUpIcon } from '@heroicons/react/24/solid';
 import { useMoralisQuery } from 'react-moralis';
+import IpfsImage from 'components/IpfsImage';
 import styles from 'styles/Home.module.css';
-import { LINK_MAP, GRAPHIC_MAP, FREN_MAP } from 'helpers/constants';
-import { url } from 'inspector';
+import { LINK_MAP, GRAPHIC_MAP } from 'helpers/constants';
 
 const Home: NextPage = () => {
   const { data, isLoading, error } = useMoralisQuery('Frens');
@@ -183,13 +183,7 @@ const Home: NextPage = () => {
               <div className="grid grid-cols-4 md:grid-cols-6 gap-6 min-w-fit mx-auto">
                 {data.map(({ attributes }, index) => (
                   <div key={index} className="flex flex-col w-32">
-                    <Image
-                      src={"https://ipfs.io/ipfs/" + attributes.image}
-                      alt={attributes.description}
-                      placeholder="blur"
-                      blurDataURL="/images/000000.png"
-                      width="128"
-                      height="128"
+                    <IpfsImage src={"https://ipfs.io/ipfs/" + attributes.image} alt={attributes.name}
                     />
                     <p className="text-center font-semibold">{attributes.name}</p>
                   </div>
