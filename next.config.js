@@ -3,7 +3,14 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['dummyimage.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ipfs.io',
+        port: '',
+        pathname: '/ipfs/**',
+      },
+    ],
   },
 };
 

@@ -4,10 +4,14 @@ import Head from 'next/head';
 import Image from 'next/image';
 import clsx from 'clsx';
 import { Bars3Icon, ArrowUpIcon } from '@heroicons/react/24/solid';
+import { useMoralisQuery } from 'react-moralis';
 import styles from 'styles/Home.module.css';
 import { LINK_MAP, GRAPHIC_MAP, FREN_MAP } from 'helpers/constants';
+import { url } from 'inspector';
 
 const Home: NextPage = () => {
+  const { data, isLoading, error } = useMoralisQuery('Frens');
+
   useEffect(() => {
     // @ts-ignore: Unreachable code error
     import('flowbite');
@@ -133,7 +137,7 @@ const Home: NextPage = () => {
                 <div className="flex mr-4">
                   <Image
                     src={
-                      image ?? 'https://dummyimage.com/50x50/dddddd/000000.png'
+                      image ?? '/images/000000.png'
                     }
                     alt={title}
                     width="50"
@@ -162,36 +166,38 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <section id="frens" className="px-4 md:px-12 xl:px-24 mb-10">
-          <div className="flex flex-col md:flex-row justify-center mx-auto max-w-fit">
-            <p className="mb-2 text-end block md:hidden font-semibold">
-              The 128 Frens:
-            </p>
-            <p
-              className={clsx(
-                styles.frensLabel,
-                'mr-2 text-end hidden md:block font-semibold',
-              )}
-            >
-              The 128 Frens:
-            </p>
-            <div className="grid grid-cols-4 md:grid-cols-11 gap-4 min-w-fit mx-auto">
-              {FREN_MAP.map(({ title, image }, index) => (
-                <div key={index} className="flex flex-col w-14">
-                  <Image
-                    src={
-                      image ?? 'https://dummyimage.com/50x50/dddddd/000000.png'
-                    }
-                    alt={title}
-                    width="50"
-                    height="50"
-                  />
-                  <p className="text-center font-semibold">{title}</p>
-                </div>
-              ))}
+        {data.length > 0 &&
+          <section id="frens" className="px-4 md:px-12 xl:px-24 mb-10">
+            <div className="flex flex-col md:flex-row justify-center mx-auto max-w-fit">
+              <p className="mb-2 text-end block md:hidden font-semibold">
+                The {data.length} Frens:
+              </p>
+              <p
+                className={clsx(
+                  styles.frensLabel,
+                  'mr-2 text-end hidden md:block font-semibold',
+                )}
+              >
+                The {data.length} Frens:
+              </p>
+              <div className="grid grid-cols-4 md:grid-cols-6 gap-6 min-w-fit mx-auto">
+                {data.map(({ attributes }, index) => (
+                  <div key={index} className="flex flex-col w-32">
+                    <Image
+                      src={"https://ipfs.io/ipfs/" + attributes.image}
+                      alt={attributes.description}
+                      placeholder="blur"
+                      blurDataURL="/images/000000.png"
+                      width="128"
+                      height="128"
+                    />
+                    <p className="text-center font-semibold">{attributes.name}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        }
 
         <section id="faq" className="px-4 md:px-12 xl:px-24 mb-10">
           <p className="font-semibold">HOW TO BUY? Easy!</p>

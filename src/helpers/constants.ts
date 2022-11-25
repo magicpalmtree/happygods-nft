@@ -1,3 +1,7 @@
+export const MORALIS_SERVER_URL =
+  process.env.NEXT_PUBLIC_MORALIS_SERVER_URL || '';
+export const MORALIS_APP_ID = process.env.NEXT_PUBLIC_MORALIS_APP_ID || '';
+
 export const LINK_MAP: { label: string; href: string }[] = [
   {
     label: 'Home',
@@ -48,9 +52,3 @@ export const GRAPHIC_MAP: { title: string; image?: string }[] = [
     title: 'money',
   },
 ];
-
-export const FREN_MAP: { title: string; image?: string }[] = Array.from(
-  Array(128).keys(),
-).map((index) => ({
-  title: `Fren 00${index}`,
-}));
